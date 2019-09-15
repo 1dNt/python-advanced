@@ -1,54 +1,57 @@
 import yaml
 import socket
 import json
+from datetime import datetime
 from argparse import ArgumentParser
 
 
-def make_request(text):
+def get_request(action, text, date=datetime.now()):
     return {
-        'data': text
+        'action': action,
+        'data': text,
+        'time': date.timestamp()
     }
 
 
 if __name__ == '__main__':
-    config = {
-        'host': 'localhost',
-        'port': 8000,
-        'buffersize': 1024,
-    }
+    cfg = dict(host='localhost', port=8000, buffersize=1024)
 
     parser = ArgumentParser()
     parser.add_argument('-c', '--config', type=str, required=False,
-                        help='Sets config path')
+                        help='Set config path')
     parser.add_argument('-ht', '--host', type=str, required=False,
-                        help='Sets server host')
-    parser.add_argument('-p', '--port', type=str, required=False,
-                        help='Sets server port')
+                        help='Set server host')
+    parser.add_argument('-p', '--port', type=int, required=False,
+                        help='Set server port')
+    parser.add_argument('-bf', '--buffer', type=int, required=False,
+                        help='Set buffer size')
 
     args = parser.parse_args()
 
     if args.config:
         with open(args.config) as file:
             file_config = yaml.safe_load(file)
-            config.update(file_config or {})
+            cfg.update(file_config or {})
 
-    host = args.host if args.host else config.get('host')
-    port = args.port if args.port else config.get('port')
-    buffersize = config.get('buffersize')
+    host = args.host if args.host else cfg.get('host')
+    port = args.port if args.port else cfg.get('port')
+    buffer = args.buffer if args.buffer else cfg.get('buffersize')
 
     sock = socket.socket()
     sock.connect((host, port))
 
-    message = input('Enter your message: ')
-    request = make_request(message)
-    str_request = json.dumps(request)
+    action = input('Enter action name: ')
+    msg = input('Enter your message: ')
 
-    sock.send(str_request.encode())
-    bytes_response = sock.recv(buffersize)
+    req = get_request(action, msg)
+    str_req = json.dumps(req)
 
-    response = json.loads(bytes_response)
+    sock.send(str_req.encode())
+    bytes_resp = sock.recv(buffer)
+
+    resp = json.loads(bytes_resp)
 
     print(f'Send message to {host}:{port}')
-    print(response)
+    print(resp)
 
     sock.close()
