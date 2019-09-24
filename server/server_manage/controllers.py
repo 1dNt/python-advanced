@@ -12,3 +12,6 @@ def sh_server_controller(request):
     else:
         return make_401(request)
 
+
+def errors_controller(request):
+    raise Exception('Server error')

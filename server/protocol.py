@@ -21,7 +21,7 @@ def get_response(request, code, data=None, date=datetime.now(), **kw):
     """
     return {
         'action': request.get('action'),
-        'time': date.timestamp(),
+        'time': date.timestamp() if isinstance(date, datetime) else date,
         'code': code,
         'data': data,
         'key': kw.get('key'),
