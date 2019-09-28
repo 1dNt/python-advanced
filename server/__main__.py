@@ -3,6 +3,7 @@
 import yaml
 import json
 import socket
+import logging
 from argparse import ArgumentParser
 
 from resolvers import get_server_action
@@ -31,18 +32,32 @@ host = args.host if args.host else cfg.get('host')
 port = int(args.port) if args.port else int(cfg.get('port'))
 buffer = args.buffer if args.buffer else cfg.get('buffersize')
 
+logging.basicConfig(
+    level=logging.DEBUG,
+    format='%(asctime)s - %(levelname)s - %(message)s',
+    handlers={
+        # logging.FileHandler('server\logs\server.log'),
+        logging.StreamHandler()
+    }
+)
+
+logger = logging.getLogger('server')
+fhs = logging.FileHandler('server\logs\server.log')
+fhs.setFormatter(logging.Formatter('%(asctime)s - %(levelname)s - %(message)s'))
+logger.addHandler(fhs)
+
 try:
     sock = socket.socket()
     sock.bind((host, port))
     sock.listen(3)
 
-    print(f'Server started with {host}:{port}')
+    logger.info(f'Server started with {host}:{port}')
 
     action_mapping = get_server_action()
 
     while True:
         client, (client_host, client_port) = sock.accept()
-        print(f'Client {client_host}:{client_port} was connected')
+        logger.info(f'Client {client_host}:{client_port} was connected')
 
         bytes_req = client.recv(buffer)
 
@@ -54,16 +69,16 @@ try:
             if controller:
                 try:
                     resp = controller(req)
-                    print(f'Request: {bytes_req.decode()}')
+                    logger.debug(f'Request: {bytes_req.decode()}')
                 except Exception as err:
                     resp = make_500(req)
-                    print(err)
+                    logger.critical(err)
             else:
                 resp = make_404(req)
-                print(f'404: Wrong action: {req}')
+                logger.error(f'404: Wrong action: {req}')
         else:
             resp = make_400(req, 'Request is not valid')
-            print(f'400: Wrong request: {req}')
+            logger.error(f'400: Wrong request: {req}')
 
         try:
             s_key = resp.pop('key')
@@ -75,8 +90,8 @@ try:
         client.close()
 
         if s_key == 'shd':
-            print('Server has been shutdown by client command')
+            logger.info('Server has been shutdown by client command')
             break
 
 except KeyboardInterrupt:
-    print('Server shutdown')
+    logger.info('Server shutdown')

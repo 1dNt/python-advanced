@@ -1,0 +1,96 @@
+2019-09-26 23:40:09,223 - INFO - Server started with localhost:8000
+2019-09-26 23:40:24,145 - INFO - Client 127.0.0.1:56899 was connected
+2019-09-26 23:40:47,954 - DEBUG - Request: {"action": "echo", "data": "qwe", "time": 1569530424.142936}
+2019-09-26 23:41:00,516 - INFO - Client 127.0.0.1:56905 was connected
+2019-09-26 23:41:19,449 - DEBUG - Request: {"action": "server shutdown", "data": "4", "time": 1569530460.513524}
+2019-09-26 23:43:03,369 - INFO - Client 127.0.0.1:56918 was connected
+2019-09-26 23:43:09,808 - DEBUG - Request: {"action": "server shutdown", "data": "12345", "time": 1569530583.366225}
+2019-09-26 23:43:09,809 - INFO - Server has been shutdown by client command
+2019-09-26 23:47:36,730 - INFO - Server started with localhost:8000
+2019-09-26 23:48:15,223 - INFO - Client 127.0.0.1:56943 was connected
+2019-09-26 23:48:18,544 - ERROR - 404: Wrong action: {'action': 'qwe', 'data': 'qwe', 'time': 1569530895.220359}
+2019-09-26 23:48:20,130 - INFO - Client 127.0.0.1:56944 was connected
+2019-09-26 23:48:25,960 - DEBUG - Request: {"action": "echo", "data": "12s", "time": 1569530900.126362}
+2019-09-26 23:48:28,614 - INFO - Client 127.0.0.1:56947 was connected
+2019-09-26 23:48:32,273 - DEBUG - Request: {"action": "timestamp", "data": "", "time": 1569530908.611322}
+2019-09-26 23:48:33,979 - INFO - Client 127.0.0.1:56949 was connected
+2019-09-26 23:48:40,521 - CRITICAL - Server error
+2019-09-26 23:48:49,503 - INFO - Client 127.0.0.1:56950 was connected
+2019-09-26 23:48:56,337 - DEBUG - Request: {"action": "server shutdown", "data": "12345", "time": 1569530929.500387}
+2019-09-26 23:48:56,337 - INFO - Server has been shutdown by client command
+2019-09-27 20:58:26,760 - INFO - Server started with localhost:8000
+2019-09-27 20:58:38,384 - INFO - Client 127.0.0.1:61586 was connected
+2019-09-27 20:58:53,246 - DEBUG - request: {'action': 'echo', 'data': 'qwe', 'time': 1569607118.381965} - response: {'action': 'echo', 'time': 1569607106.757789, 'code': 200, 'data': 'qwe', 'key': None}
+2019-09-27 20:58:53,246 - DEBUG - Request: {"action": "echo", "data": "qwe", "time": 1569607118.381965}
+2019-09-27 21:00:02,124 - INFO - Client 127.0.0.1:61590 was connected
+2019-09-27 21:00:06,438 - DEBUG - request: {'action': 'timestamp', 'data': '', 'time': 1569607202.120995} - response: {'action': 'timestamp', 'time': 1569607106.757789, 'code': 200, 'data': 1569607206.438084, 'key': None}
+2019-09-27 21:00:06,438 - DEBUG - Request: {"action": "timestamp", "data": "", "time": 1569607202.120995}
+2019-09-27 21:10:50,738 - INFO - Client 127.0.0.1:61688 was connected
+2019-09-27 21:10:56,932 - DEBUG - Request: {"action": "server shutdown", "data": "12345", "time": 1569607850.735083}
+2019-09-27 21:10:56,932 - INFO - Server has been shutdown by client command
+2019-09-27 21:11:07,293 - INFO - Server started with localhost:8000
+2019-09-27 21:11:11,333 - INFO - Client 127.0.0.1:61693 was connected
+2019-09-27 21:11:18,964 - ERROR - 404: Wrong action: {'action': 'qwe', 'data': '', 'time': 1569607871.330173}
+2019-09-27 21:11:21,381 - INFO - Client 127.0.0.1:61696 was connected
+2019-09-27 21:11:26,253 - DEBUG - Request: {'action': 'server shutdown', 'data': '', 'time': 1569607881.378075} - Response: {'action': 'server shutdown', 'time': 1569607867.29036, 'code': 401, 'data': '401: Unauthorized. Please enter the password', 'key': None}
+2019-09-27 21:11:26,253 - DEBUG - Request: {"action": "server shutdown", "data": "", "time": 1569607881.378075}
+2019-09-27 21:12:03,058 - INFO - Client 127.0.0.1:61700 was connected
+2019-09-27 21:12:09,172 - DEBUG - Request: {'action': 'server shutdown', 'data': '12345', 'time': 1569607923.05413} - Response: {'action': 'server shutdown', 'time': 1569607867.29036, 'code': 200, 'data': 'Server has been shutdown', 'key': 'shd'}
+2019-09-27 21:12:09,172 - DEBUG - Request: {"action": "server shutdown", "data": "12345", "time": 1569607923.05413}
+2019-09-27 21:12:09,172 - INFO - Server has been shutdown by client command
+2019-09-27 21:30:49,774 - INFO - Server started with localhost:8000
+2019-09-27 21:30:54,353 - INFO - Client 127.0.0.1:61820 was connected
+2019-09-27 21:30:56,402 - ERROR - 400: Wrong request: {'action': '', 'data': '', 'time': 1569609054.350192}
+2019-09-27 21:30:59,305 - INFO - Client 127.0.0.1:61821 was connected
+2019-09-27 21:31:01,922 - DEBUG - Request: {'action': 'echo', 'data': 'qwe', 'time': 1569609059.302936} - Response: {'action': 'echo', 'time': 1569609049.771439, 'code': 200, 'data': 'qwe', 'key': None}
+2019-09-27 21:31:01,922 - DEBUG - Request: {"action": "echo", "data": "qwe", "time": 1569609059.302936}
+2019-09-27 21:31:03,093 - INFO - Client 127.0.0.1:61822 was connected
+2019-09-27 21:31:07,418 - DEBUG - Request: {'action': 'timestamp', 'data': '', 'time': 1569609063.090801} - Response: {'action': 'timestamp', 'time': 1569609049.771439, 'code': 200, 'data': 1569609067.418222, 'key': None}
+2019-09-27 21:31:07,419 - DEBUG - Request: {"action": "timestamp", "data": "", "time": 1569609063.090801}
+2019-09-27 21:31:15,019 - INFO - Client 127.0.0.1:61823 was connected
+2019-09-27 21:31:21,594 - DEBUG - Request: {'action': 'server shutdown', 'data': '123', 'time': 1569609075.016891} - Response: {'action': 'server shutdown', 'time': 1569609049.771439, 'code': 401, 'data': '401: Unauthorized. Please enter the password', 'key': None}
+2019-09-27 21:31:21,595 - DEBUG - Request: {"action": "server shutdown", "data": "123", "time": 1569609075.016891}
+2019-09-27 21:31:22,659 - INFO - Client 127.0.0.1:61826 was connected
+2019-09-27 21:31:28,962 - DEBUG - Request: {'action': 'server shutdown', 'data': '12345', 'time': 1569609082.65645} - Response: {'action': 'server shutdown', 'time': 1569609049.771439, 'code': 200, 'data': 'Server has been shutdown', 'key': 'shd'}
+2019-09-27 21:31:28,962 - DEBUG - Request: {"action": "server shutdown", "data": "12345", "time": 1569609082.65645}
+2019-09-27 21:31:28,963 - INFO - Server has been shutdown by client command
+2019-09-27 21:36:43,706 - INFO - Server started with localhost:8000
+2019-09-27 21:36:47,346 - INFO - Client 127.0.0.1:61858 was connected
+2019-09-27 21:36:50,281 - DEBUG - Request: {'action': 'echo', 'data': 'qwe', 'time': 1569609407.342706} - Response: {'action': 'echo', 'time': 1569609403.702445, 'code': 200, 'data': 'qwe', 'key': None}
+2019-09-27 21:36:50,281 - DEBUG - Request: {"action": "echo", "data": "qwe", "time": 1569609407.342706}
+2019-09-27 21:36:51,860 - INFO - Client 127.0.0.1:61859 was connected
+2019-09-27 21:37:00,129 - DEBUG - Request: {'action': 'server shutdown', 'data': '12345', 'time': 1569609411.856628} - Response: {'action': 'server shutdown', 'time': 1569609403.702445, 'code': 200, 'data': 'Server has been shutdown', 'key': 'shd'}
+2019-09-27 21:37:00,130 - DEBUG - Request: {"action": "server shutdown", "data": "12345", "time": 1569609411.856628}
+2019-09-27 21:37:00,130 - INFO - Server has been shutdown by client command
+2019-09-27 21:38:21,084 - INFO - Server started with localhost:8000
+2019-09-27 21:38:25,483 - INFO - Client 127.0.0.1:61866 was connected
+2019-09-27 21:38:29,953 - DEBUG - Controller: echo_controller: Request: {'action': 'echo', 'data': 'qwe', 'time': 1569609505.480124} - Response: {'action': 'echo', 'time': 1569609501.081892, 'code': 200, 'data': 'qwe', 'key': None}
+2019-09-27 21:38:29,954 - DEBUG - Request: {"action": "echo", "data": "qwe", "time": 1569609505.480124}
+2019-09-27 21:40:57,532 - INFO - Client 127.0.0.1:61882 was connected
+2019-09-27 21:41:04,353 - ERROR - 400: Wrong request: {'action': '', 'data': 'qwe', 'time': 1569609657.529294}
+2019-09-27 21:41:07,040 - INFO - Client 127.0.0.1:61883 was connected
+2019-09-27 21:41:13,521 - ERROR - 404: Wrong action: {'action': 'timestamp123', 'data': '', 'time': 1569609667.036856}
+2019-09-27 21:41:14,872 - INFO - Client 127.0.0.1:61885 was connected
+2019-09-27 21:41:18,073 - DEBUG - Controller: timestamp_controller: Request: {'action': 'timestamp', 'data': '', 'time': 1569609674.869898} - Response: {'action': 'timestamp', 'time': 1569609501.081892, 'code': 200, 'data': 1569609678.073326, 'key': None}
+2019-09-27 21:41:18,074 - DEBUG - Request: {"action": "timestamp", "data": "", "time": 1569609674.869898}
+2019-09-27 21:41:19,705 - INFO - Client 127.0.0.1:61887 was connected
+2019-09-27 21:41:23,529 - DEBUG - Controller: sh_server_controller: Request: {'action': 'server shutdown', 'data': '', 'time': 1569609679.701969} - Response: {'action': 'server shutdown', 'time': 1569609501.081892, 'code': 401, 'data': '401: Unauthorized. Please enter the password', 'key': None}
+2019-09-27 21:41:23,529 - DEBUG - Request: {"action": "server shutdown", "data": "", "time": 1569609679.701969}
+2019-09-27 21:41:24,779 - INFO - Client 127.0.0.1:61888 was connected
+2019-09-27 21:41:30,944 - DEBUG - Controller: sh_server_controller: Request: {'action': 'server shutdown', 'data': '12345', 'time': 1569609684.776391} - Response: {'action': 'server shutdown', 'time': 1569609501.081892, 'code': 200, 'data': 'Server has been shutdown', 'key': 'shd'}
+2019-09-27 21:41:30,945 - DEBUG - Request: {"action": "server shutdown", "data": "12345", "time": 1569609684.776391}
+2019-09-27 21:41:30,945 - INFO - Server has been shutdown by client command
+2019-09-27 21:59:47,215 - INFO - Server started with localhost:8000
+2019-09-27 21:59:51,375 - INFO - Client 127.0.0.1:61997 was connected
+2019-09-27 22:00:00,359 - DEBUG - Request: {"action": "echo", "data": "Test text", "time": 1569610791.371283}
+2019-09-27 22:00:03,086 - INFO - Client 127.0.0.1:62000 was connected
+2019-09-27 22:00:09,831 - DEBUG - Request: {"action": "timestamp", "data": "none", "time": 1569610803.083946}
+2019-09-27 22:00:16,654 - INFO - Client 127.0.0.1:62004 was connected
+2019-09-27 22:00:26,559 - ERROR - 404: Wrong action: {'action': 'sets action', 'data': 'test', 'time': 1569610816.651642}
+2019-09-27 22:00:28,047 - INFO - Client 127.0.0.1:62005 was connected
+2019-09-27 22:00:42,326 - CRITICAL - Server error
+2019-09-27 22:00:45,150 - INFO - Client 127.0.0.1:62006 was connected
+2019-09-27 22:00:51,431 - DEBUG - Request: {"action": "server shutdown", "data": "1", "time": 1569610845.1464}
+2019-09-27 22:00:52,827 - INFO - Client 127.0.0.1:62007 was connected
+2019-09-27 22:01:00,591 - DEBUG - Request: {"action": "server shutdown", "data": "12345", "time": 1569610852.824855}
+2019-09-27 22:01:00,592 - INFO - Server has been shutdown by client command
