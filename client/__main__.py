@@ -2,12 +2,9 @@ import yaml
 import socket
 import json
 import zlib
+import threading
 from datetime import datetime
 from argparse import ArgumentParser
-
-
-READ_MODE = 'r'
-WRITE_MODE = 'w'
 
 
 def get_request(action, text, date=datetime.now()):
@@ -16,6 +13,22 @@ def get_request(action, text, date=datetime.now()):
         'data': text,
         'time': date.timestamp()
     }
+
+
+def read(sock, buffer):
+    while True:
+        try:
+            if shd_key:
+                sock.close()
+                break
+            else:
+                bytes_resp = zlib.decompress(sock.recv(buffer))
+                resp = json.loads(bytes_resp)
+                print(f'\n{resp}')
+        except:
+            sock.close()
+            print(resp.get('data'))
+            break
 
 
 if __name__ == '__main__':
@@ -30,8 +43,6 @@ if __name__ == '__main__':
                         help='Set server port')
     parser.add_argument('-bf', '--buffer', type=int, required=False,
                         help='Set buffer size')
-    parser.add_argument('-m', '--mode', type=str, default=READ_MODE,
-                        help='Set buffer size')
 
     args = parser.parse_args()
 
@@ -43,32 +54,28 @@ if __name__ == '__main__':
     host = args.host if args.host else cfg.get('host')
     port = args.port if args.port else cfg.get('port')
     buffer = args.buffer if args.buffer else cfg.get('buffersize')
+    shd_key = False
 
     try:
         sock = socket.socket()
         sock.connect((host, port))
 
+        read_thread = threading.Thread(target=read, args=(sock, buffer))
+        read_thread.start()
+
         while True:
-            if args.mode == WRITE_MODE:
-                action = input('Enter action name: ')
-                if action == 'client shd':  # У меня почему то "Ctrl+C" не останавилвает программу в терминале PyCh :D
-                    break
-                else:
-                    msg = input('Enter your message: ')
-
-                    req = get_request(action, msg)
-                    str_req = json.dumps(req)
-                    bytes_req = str_req.encode()
-
-                    sock.send(zlib.compress(bytes_req))
+            action = input('Enter action name: ')
+            if action == 'client shd':  # У меня почему то "Ctrl+C" не останавилвает программу в терминале PyCh :D
+                shd_key = True
+                sock.close()
+                break
             else:
-                bytes_resp = zlib.decompress(sock.recv(buffer))
-                resp = json.loads(bytes_resp)
-                print(resp)
-                if resp.get('key') == 'shd':
-                    sock.close()
-                    print('Client has been shutdown because server is offline')
-                    break
+                msg = input('Enter your message: ')
 
-    except KeyboardInterrupt:
-        print('Client shutdown')
+                req = get_request(action, msg)
+                str_req = json.dumps(req)
+                bytes_req = str_req.encode()
+
+                sock.send(zlib.compress(bytes_req))
+    except:
+        print('Client has been shutdown')

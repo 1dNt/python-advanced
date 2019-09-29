@@ -1,4 +1,4 @@
-from protocol import make_200, make_401
+from protocol import make_200
 from decorators import log
 
 
@@ -12,7 +12,7 @@ def sh_server_controller(request):
     if request.get('data') == '12345':
         return make_200(request, 'Server has been shutdown', key='shd')
     else:
-        return make_401(request)
+        raise Exception(401)
 
 
 def errors_controller(request):
