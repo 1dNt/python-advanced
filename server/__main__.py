@@ -1,13 +1,12 @@
 # python server
-# python client.py
+# python client
 import yaml
-import json
 import socket
+import select
 import logging
 from argparse import ArgumentParser
-
 from resolvers import get_server_action
-from protocol import validate_request, make_400, make_404, make_500
+from handlers import handle_resp_key, handle_tcp_req
 
 cfg = dict(host='localhost', port=8000, buffersize=1024)
 
@@ -36,62 +35,62 @@ logging.basicConfig(
     level=logging.DEBUG,
     format='%(asctime)s - %(levelname)s - %(message)s',
     handlers={
-        # logging.FileHandler('server\logs\server.log'),
+        logging.FileHandler('server\logs\server.log'),
         logging.StreamHandler()
     }
 )
 
-logger = logging.getLogger('server')
-fhs = logging.FileHandler('server\logs\server.log')
-fhs.setFormatter(logging.Formatter('%(asctime)s - %(levelname)s - %(message)s'))
-logger.addHandler(fhs)
+requests = []
+connections = []
 
 try:
     sock = socket.socket()
     sock.bind((host, port))
+    sock.setblocking(False)
+    # sock.settimeout(0)
     sock.listen(3)
 
-    logger.info(f'Server started with {host}:{port}')
+    logging.info(f'Server started with {host}:{port}')
 
     action_mapping = get_server_action()
 
     while True:
-        client, (client_host, client_port) = sock.accept()
-        logger.info(f'Client {client_host}:{client_port} was connected')
-
-        bytes_req = client.recv(buffer)
-
-        req = json.loads(bytes_req)
-
-        if validate_request(req):
-            action = req.get('action')
-            controller = action_mapping.get(action)
-            if controller:
-                try:
-                    resp = controller(req)
-                    logger.debug(f'Request: {bytes_req.decode()}')
-                except Exception as err:
-                    resp = make_500(req)
-                    logger.critical(err)
-            else:
-                resp = make_404(req)
-                logger.error(f'404: Wrong action: {req}')
-        else:
-            resp = make_400(req, 'Request is not valid')
-            logger.error(f'400: Wrong request: {req}')
-
+        s_key = None
         try:
-            s_key = resp.pop('key')
-        except KeyError:
+            client, (client_host, client_port) = sock.accept()
+            logging.info(f'Client {client_host}:{client_port} was connected')
+            connections.append(client)
+        except:
+            pass
+        if connections:  # !!!
+            """
+            Без этого решения сервер валится при запуске на Windows через sock.settimeout(n) секунд
+            Тк connections = [] пустой. С обшибкой:
+                File "server\__main__.py", line 76, in <module>
+                    rlist, wlist, xlist = select.select(connections, connections, connections, 0)
+                OSError: [WinError 10022] An invalid argument was supplied
+                
+            Походу функция select на Win не хочет отрабатывать с пустым списком?
+            """
+            rlist, wlist, xlist = select.select(connections, connections, connections, 0)
+
+            for read_client in rlist:
+                requests.append(read_client.recv(buffer))
+
+            if requests:
+                bytes_req = requests.pop()
+                bytes_resp = handle_tcp_req(bytes_req, action_mapping)
+                s_key = handle_resp_key(bytes_resp)  # TODO костыль для функции остановки сервера
+
+                for write_client in wlist:
+                    write_client.send(bytes_resp)
+
+            if s_key == 'shd':
+                sock.close()
+                logging.info('Server has been shutdown by client command')
+                break
+        else:
             pass
 
-        str_resp = json.dumps(resp)
-        client.send(str_resp.encode())
-        client.close()
-
-        if s_key == 'shd':
-            logger.info('Server has been shutdown by client command')
-            break
-
 except KeyboardInterrupt:
-    logger.info('Server shutdown')
+    logging.info('Server shutdown')

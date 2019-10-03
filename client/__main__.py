@@ -51,13 +51,16 @@ if __name__ == '__main__':
         while True:
             if args.mode == WRITE_MODE:
                 action = input('Enter action name: ')
-                msg = input('Enter your message: ')
+                if action == 'client shd':  # У меня почему то "Ctrl+C" не останавилвает программу в терминале PyCh :D
+                    break
+                else:
+                    msg = input('Enter your message: ')
 
-                req = get_request(action, msg)
-                str_req = json.dumps(req)
-                bytes_req = str_req.encode()
+                    req = get_request(action, msg)
+                    str_req = json.dumps(req)
+                    bytes_req = str_req.encode()
 
-                sock.send(zlib.compress(bytes_req))
+                    sock.send(zlib.compress(bytes_req))
             else:
                 bytes_resp = zlib.decompress(sock.recv(buffer))
                 resp = json.loads(bytes_resp)
