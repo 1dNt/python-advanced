@@ -1,67 +1,43 @@
-import pytest
 from protocol import get_response
-from datetime import datetime
-
-CODE = 1488
-
-ACTION = 'test'
-
-DATE = datetime.now().timestamp()
-
-DATA = 'test_data'
-
-KEY = '-s'
-
-REQUEST = { # изменен порядок ключей
-    'time': DATE,
-    'action': ACTION,
-    'data': DATA,
-}
-
-RESP = { # изменен порядок ключей
-    'key': KEY,
-    'time': DATE,
-    'action': ACTION,
-    'data': DATA,
-    'code': CODE,
-}
+from .fixtures import *
 
 
-def test_get_response(): # выводит True даже при разбросанных ключах в словаре
-    resp = get_response(REQUEST, CODE, DATA, DATE, key=KEY)
-    assert resp == RESP
+def test_get_response(init_req, init_resp, exp_code, exp_data, exp_date,
+                      exp_key):  # выводит True даже при разбросанных ключах в словаре
+    resp = get_response(init_req, exp_code, exp_data, exp_date, key=exp_key)
+    assert resp == init_resp
 
 
-def test_act_get_response():
-    resp = get_response(REQUEST, CODE, DATA, DATE, key=KEY)
+def test_act_get_response(init_req, exp_action, exp_code, exp_data, exp_date, exp_key):
+    resp = get_response(init_req, exp_code, exp_data, exp_date, key=exp_key)
     act = resp.get('action')
-    assert act == ACTION
+    assert act == exp_action
 
 
-def test_code_get_response():
-    resp = get_response(REQUEST, CODE, DATA, DATE, key=KEY)
+def test_code_get_response(init_req, exp_code, exp_data, exp_date, exp_key):
+    resp = get_response(init_req, exp_code, exp_data, exp_date, key=exp_key)
     code = resp.get('code')
-    assert code == CODE
+    assert code == exp_code
 
 
-def test_time_get_response():
-    resp = get_response(REQUEST, CODE, DATA, DATE, key=KEY)
+def test_time_get_response(init_req, exp_code, exp_data, exp_date, exp_key):
+    resp = get_response(init_req, exp_code, exp_data, exp_date, key=exp_key)
     time = resp.get('time')
-    assert time == DATE
+    assert time == exp_date
 
 
-def test_dt_get_response():
-    resp = get_response(REQUEST, CODE, DATA, DATE, key=KEY)
+def test_dt_get_response(init_req, exp_code, exp_data, exp_date, exp_key):
+    resp = get_response(init_req, exp_code, exp_data, exp_date, key=exp_key)
     dt = resp.get('data')
-    assert dt == DATA
+    assert dt == exp_data
 
 
-def test_key_get_response():
-    resp = get_response(REQUEST, CODE, DATA, DATE, key=KEY)
+def test_key_get_response(init_req, exp_code, exp_data, exp_date, exp_key):
+    resp = get_response(init_req, exp_code, exp_data, exp_date, key=exp_key)
     key = resp.get('key')
-    assert key == KEY
+    assert key == exp_key
 
 
-def test_invalid_get_resp():
+def test_invalid_get_resp(exp_code):
     with pytest.raises(AttributeError):
-        resp = get_response(None, CODE)
+        get_response(None, exp_code)

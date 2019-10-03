@@ -1,52 +1,32 @@
 from protocol import *
-from datetime import datetime
-
-CODES = {
-    'make200': 200,
-    'make400': 400,
-    'make401': 401,
-    'make404': 404,
-    'make500': 500,
-}
-
-ACTION = 'test'
-
-DATE = datetime.now().timestamp()
-
-KEY = '-s'
-
-REQUEST = {
-    'time': DATE,
-    'action': ACTION,
-    'data': 'tes_data',
-}
+from .fixtures import *
 
 
-def test_make200():
-    resp = make_200(REQUEST, date=DATE, key=KEY)
+def test_make200(init_req, exp_codes, exp_date, exp_key):
+    resp = make_200(init_req, date=exp_date, key=exp_key)
     code = resp.get('code')
-    assert code == CODES.get('make200')
+    assert code == exp_codes.get('make200')
 
 
-def test_make400():
-    resp = make_400(REQUEST, date=DATE)
+def test_make400(init_req, exp_codes, exp_date):
+    resp = make_400(init_req, date=exp_date)
     code = resp.get('code')
-    assert code == CODES.get('make400')
+    assert code == exp_codes.get('make400')
 
 
-def test_make401():
-    resp = make_401(REQUEST, date=DATE)
+def test_make401(init_req, exp_codes, exp_date):
+    resp = make_401(init_req, date=exp_date)
     code = resp.get('code')
-    assert code == CODES.get('make401')
+    assert code == exp_codes.get('make401')
 
 
-def test_make404():
-    resp = make_404(REQUEST, date=DATE)
+def test_make404(init_req, exp_codes, exp_date):
+    resp = make_404(init_req, date=exp_date)
     code = resp.get('code')
-    assert code == CODES.get('make404')
+    assert code == exp_codes.get('make404')
 
 
-def test_make500():
-    resp = make_500(REQUEST, date=DATE)
+def test_make500(init_req, exp_codes, exp_date):
+    resp = make_500(init_req, date=exp_date)
     code = resp.get('code')
-    assert code == CODES.get('make500')
+    assert code == exp_codes.get('make500')
