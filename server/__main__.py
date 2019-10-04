@@ -4,6 +4,7 @@ import yaml
 import socket
 import select
 import logging
+import threading
 from argparse import ArgumentParser
 from resolvers import get_server_action
 from handlers import handle_resp_key, handle_tcp_req
@@ -43,6 +44,27 @@ logging.basicConfig(
 requests = []
 connections = []
 
+
+def read(sock, requests, buffer):
+    try:
+        req = sock.recv(buffer)
+        if req:
+            requests.append(req)
+    except:  # Избавляемся от зависания сервера
+        """
+        Удаляем из всех листов клиента, который сам отключился 
+        Иначе сервер уходит в бесконечный краш при попытках взаимодействия с отключенным клиентом: 
+        ConnectionResetError: [WinError 10054] An existing connection was forcibly closed by the remote host
+        """
+        connections.remove(sock)
+        rlist.remove(sock)
+        wlist.remove(sock)
+
+
+def write(sock, resp):
+    sock.send(resp)
+
+
 try:
     sock = socket.socket()
     sock.bind((host, port))
@@ -75,22 +97,32 @@ try:
             rlist, wlist, xlist = select.select(connections, connections, connections, 0)
 
             for read_client in rlist:
-                requests.append(read_client.recv(buffer))
+                read_thread = threading.Thread(target=read, args=(read_client, requests, buffer))
+                read_thread.start()
 
             if requests:
                 bytes_req = requests.pop()
                 bytes_resp = handle_tcp_req(bytes_req, action_mapping)
-                s_key = handle_resp_key(bytes_resp)  # TODO костыль для функции остановки сервера
+                s_key = handle_resp_key(bytes_resp)  # TODO костыль для функции удаленной остановки сервера
 
                 for write_client in wlist:
-                    write_client.send(bytes_resp)
+                    write_thread = threading.Thread(target=write, args=(write_client, bytes_resp))
+                    write_thread.start()
 
             if s_key == 'shd':
                 sock.close()
                 logging.info('Server has been shutdown by client command')
                 break
-        else:
-            pass
 
 except KeyboardInterrupt:
     logging.info('Server shutdown')
+
+# Traceback (most recent call last):
+#   File "C:\Program Files\Python37\lib\threading.py", line 917, in _bootstrap_inner
+#     self.run()
+#   File "C:\Program Files\Python37\lib\threading.py", line 865, in run
+#     self._target(*self._args, **self._kwargs)
+#   File "server\__main__.py", line 49, in read
+#     req = sock.recv(buffer)
+# ConnectionResetError: [WinError 10054] An existing connection was forcibly closed by the remote host
+

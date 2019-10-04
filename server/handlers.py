@@ -1,13 +1,13 @@
 import json
 import logging
-from protocol import validate_request, make_400, make_404, make_500
+from protocol import validate_request, make_400, make_401, make_404, make_500
 from middlewares import comp_middleware, decomp_mid_key
 
 
 @comp_middleware
 def handle_tcp_req(bytes_req, action_mapping):
     """
-    Функция обработки запроса
+    Функция формирования ответа
     :param bytes_req: bytes
     :param action_mapping: dict
     :return: bytes
@@ -18,11 +18,15 @@ def handle_tcp_req(bytes_req, action_mapping):
         controller = action_mapping.get(action)
         if controller:
             try:
-                resp = controller(req)
                 logging.debug(f'Request: {bytes_req.decode()}')
+                resp = controller(req)
             except Exception as err:
-                resp = make_500(req)
-                logging.critical(err)
+                if err.args[0] == 401:
+                    resp = make_401(req)
+                    logging.error(f'{err}: Unauthorized. Please enter the password')
+                else:
+                    resp = make_500(req)
+                    logging.critical(err)
         else:
             resp = make_404(req)
             logging.error(f'404: Wrong action: {req}')
